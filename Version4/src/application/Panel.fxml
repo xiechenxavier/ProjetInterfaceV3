@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="MainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Fichier">
+            <items>
+                  <MenuItem mnemonicParsing="false" text="Nouvelle" />
+                  <MenuItem mnemonicParsing="false" text="Ouvrir" />
+                  <MenuItem mnemonicParsing="false" text="Enregistrer" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+              <MenuItem mnemonicParsing="false" onAction="#CloseApp" text="Fermer" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edition">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Annuler" />
+                  <MenuItem mnemonicParsing="false" onAction="#EffacerLaPanel" text="Effacer" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Aide">
+            <items>
+              <MenuItem fx:id="Infos" mnemonicParsing="false" onAction="#alertInformations" text="脌 propos de" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <left>
+      <AnchorPane fx:id="APane" prefHeight="472.0" prefWidth="169.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="448.0" prefWidth="169.0">
+               <children>
+                <TitledPane fx:id="f" prefHeight="234.0" prefWidth="166.0" text="Formes">
+                  <content>
+                    <AnchorPane fx:id="FormesPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="150.0">
+                           <children>
+                              <JFXButton fx:id="Pinceau" ellipsisString="" layoutX="12.0" layoutY="12.0" onAction="#choix" prefHeight="36.0" prefWidth="36.0" />
+                              <JFXButton fx:id="Ligne" ellipsisString="" layoutX="66.0" layoutY="12.0" onAction="#choix" prefHeight="36.0" prefWidth="36.0" />
+                              <JFXButton fx:id="Rectangle" ellipsisString="" layoutX="117.0" layoutY="12.0" onAction="#choix" prefHeight="36.0" prefWidth="36.0" />
+                              <JFXButton fx:id="Triangle" ellipsisString="" layoutX="12.0" layoutY="63.0" onAction="#choix" prefHeight="36.0" prefWidth="36.0" />
+                              <JFXButton fx:id="Ellipse" ellipsisString="" layoutX="66.0" layoutY="63.0" onAction="#choix" prefHeight="36.0" prefWidth="36.0" />
+                              <JFXButton fx:id="Circle" ellipsisString="" layoutX="117.0" layoutY="63.0" onAction="#choix" prefHeight="36.0" prefWidth="36.0" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </TitledPane>
+                <TitledPane fx:id="c" prefHeight="213.0" prefWidth="169.0" text="Configuration">
+                  <content>
+                    <AnchorPane fx:id="ConfigurationPane" minHeight="0.0" minWidth="0.0" prefHeight="181.0" prefWidth="167.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="27.0" text="Couleur :" />
+                              <Label layoutX="14.0" layoutY="65.0" text="Taille : " />
+                              <TextField fx:id="TextField" layoutX="66.0" layoutY="60.0" prefHeight="14.0" prefWidth="29.0" />
+                              <Label layoutX="101.0" layoutY="65.0" text="pk" />
+                              <Label layoutX="4.0" layoutY="140.0" text="Action锛�" />
+                              <ComboBox fx:id="cbb" layoutX="72.0" layoutY="134.0" onAction="#ManipulerFigure" prefHeight="27.0" prefWidth="83.0" />
+                              <ColorPicker fx:id="setColor" layoutX="76.0" layoutY="22.0" onAction="#ChoisirColor" prefHeight="27.0" prefWidth="85.0" />
+                              <CheckBox fx:id="Selectionner" layoutX="86.0" layoutY="102.0" mnemonicParsing="false" onAction="#Selected" />
+                              <Label layoutX="14.0" layoutY="102.0" text="Selected :" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </TitledPane>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </left>
+   <right>
+      <Canvas fx:id="mainCanvas" height="673.0" width="631.0" BorderPane.alignment="CENTER" />
+   </right>
+</BorderPane>
