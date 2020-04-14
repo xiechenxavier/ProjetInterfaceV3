@@ -2,30 +2,14 @@ package Modele;
 import javafx.scene.paint.Color;
 
 public abstract class FigureColoree {
-	public static final int TAILLE_CARRE_SELECTION = 6;//正方形边长
+	public static final int TAILLE_CARRE_SELECTION = 7;//选中时小正方形的边长
 	private Color colorCorant;
 	protected Point vertex;//构成本图形的主要顶点
 	protected boolean EnSelection;
-	protected double width;
-	protected double height;
+
 	public FigureColoree() {
 		EnSelection=false;
 	}
-	
-	public void setWidth(double width) {
-		this.width=width;
-	}
-	public void setHeight(double height) {
-		this.height=height;
-	}
-	
-	public double getWidth() {
-		return this.width;
-	}
-	public double getHeight() {
-		return this.height;
-	}
-
 	//获取顶点，顶点也就是第一个点
 	public double getVertexY() {
 		// TODO Auto-generated method stub
@@ -34,7 +18,11 @@ public abstract class FigureColoree {
 
 	public double getVertexX() {
 		// TODO Auto-generated method stub
+		if(this.vertex!=null) {
 		return this.vertex.RendreX();
+		}else {
+			throw new NullPointerException("");
+		}
 	}
 	public void setVertex(Point p) {
 		this.vertex=p;
@@ -48,14 +36,6 @@ public abstract class FigureColoree {
 		this.colorCorant = colorCorant;
 	}
 
-//	public Point getTab_points_mem() {
-//		return vertex;
-//	}
-//
-//	public void setTab_points_mem(Point tab_points_mem) {
-//		this.tab_points_mem = tab_points_mem;
-//	}
-
 	public boolean isEnSelection() {
 		return EnSelection;
 	}
@@ -65,7 +45,7 @@ public abstract class FigureColoree {
 	}
 	@Override
 	public String toString() {
-		return "FigureColoree [vertex=" + vertex + ", width=" + width + ", height=" + height + "]";
+		return "FigureColoree [vertex=" + vertex  + "]";
 	}
 	public void changeColor(Color c) {
 		// TODO Auto-generated method stub

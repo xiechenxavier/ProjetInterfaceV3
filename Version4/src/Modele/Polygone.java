@@ -5,7 +5,8 @@ import javafx.scene.paint.Color;
 
 public abstract class Polygone extends FigureColoree{
 	protected Point[] PointsVertex;//表示一个图形的所有顶点
-	protected int nbPointsVertex;
+	protected int nbPointsVertex;//点的个数
+	private int seuilIndice=0;
 
 	public Polygone(int nbPointsVertex) {
 		this.nbPointsVertex=nbPointsVertex;//必须给出一共需要的顶点数量
@@ -18,15 +19,19 @@ public abstract class Polygone extends FigureColoree{
 	public void setPointsVertex(Point[] pointsVertex) {
 		PointsVertex = pointsVertex;
 	}
+	//这个规则图形有几个顶点
 	public int getNbPointsVertex() {
 		return nbPointsVertex;
 	}
+	//设定顶点个数
 	public void setNbPointsVertex(int nbPointsVertex) {
 		this.nbPointsVertex = nbPointsVertex;
 	}
-
+	//是否在图形范围内部
 	public abstract boolean Accesseur(double x, double y);
 	// TODO Auto-generated method stub
+	//图形变换，主要是变换形状
+	public abstract void transformation(double dx ,double dy, int id_pts);
 
 	public int carreDeSelection(int x,int y) {
 		for (int i=0;i<this.nbPointsVertex;i++) {
@@ -55,4 +60,42 @@ public abstract class Polygone extends FigureColoree{
 			}
 		}
 	}
+
+	public boolean IsSeuil(double x,double y) {//在图形边缘顶点处,小正方行位置上
+		Point[] VertexPoints=this.getPointsVertex();
+		boolean[] colJudgeSeuil=new boolean[VertexPoints.length];
+		boolean res=false;
+		for(int i=0;i<colJudgeSeuil.length;i++ ) {
+			boolean nx=this.CarreAccesseur(VertexPoints[i].RendreX(), VertexPoints[i].RendreY(), x, y);//是否在正方形内部
+			colJudgeSeuil[i]=nx;
+			System.out.print(nx+" ");
+		}
+		System.out.println();
+		for(int j=0;j<colJudgeSeuil.length;j++) {
+			if(colJudgeSeuil[j]) {
+				this.seuilIndice=j;
+				res=true;
+				break;
+			}
+		}
+		return res;
+	}
+	public int getSeuilIndice() {
+		return this.seuilIndice;//哪一个点
+	}
+
+	//顶点正方形范围的判断
+	public boolean CarreAccesseur(double vertexX,double vertexY,double x, double y) {//某个顶点的vertexX，vertexY
+		// TODO Auto-generated method stub
+		double x3=vertexX+TAILLE_CARRE_SELECTION*3;
+		double y3=vertexY+TAILLE_CARRE_SELECTION*3;
+		double x1=vertexX-TAILLE_CARRE_SELECTION*3;
+		double y1=vertexY-TAILLE_CARRE_SELECTION*3;
+		return (x>=x1)&&(x<=x3)&&(y>=y1)&&(y<=y3);
+	}
+	
+	public abstract void Redimentionner(double newwidth,double newheight);//ca permet de redimetionner une graph
+	public abstract double getLargeur();
+	public abstract double getHauteur();
+	public abstract String toString();//名字
 }

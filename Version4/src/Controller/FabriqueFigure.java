@@ -9,7 +9,6 @@ import Modele.Point;
 import Modele.Polygone;
 import Modele.Rectangle;
 import Modele.Triangle;
-import application.MainController;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
@@ -17,31 +16,67 @@ import javafx.scene.paint.Color;
 
 public class FabriqueFigure {
 	FabriqueModele fm;
-//	private GraphicsContext MainController.gc;
+	//	private GraphicsContext MainController.gc;
 	Canvas mainCanvas;
 	String TypeFigure;
 	MainController mac;
+	ArrayList<Canvas> historyCanvas;
 
 	public FabriqueFigure(Canvas mc,FabriqueModele fm,String TypeFigure,MainController mac) {
 		this.mainCanvas=mc;
 		this.fm=fm;
-//		this.MainController.gc=MainController.gc;
+		//		this.MainController.gc=MainController.gc;
 		this.mac=mac;
+		historyCanvas=new ArrayList<Canvas>();
 	}
 	public void FirstPoint(MouseEvent e) {
+
+		FigureColoree fc=this.fm.getFigureenCours();
+		if(fc instanceof LigneDroit) {
+			((LigneDroit)fc).setGrosseur(mac.getGrosseur());
+		}
 		this.fm.getFigureenCours().changeColor(mac.getColor());
 		this.fm.getFigureenCours().setVertex(new Point(e.getX(),e.getY(),this.fm.getFigureenCours().getColorCorant()));//设置顶点的位置
 		System.out.println(this.fm.getFigureenCours().getColorCorant());
 	}
 	public void EffaceretDessiner() {
+
 		MainController.gc.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
-		ArrayList<FigureColoree> forms=fm.getFigures();
-		for(FigureColoree f:forms) {
-			judgeShape(f);
+//		ArrayList<FigureColoree> forms=fm.getFigures();
+//		for(FigureColoree f:forms) {
+//			judgeShape(f);
+//		}
+//		this.afficherListLine();
+//		Canvas c=mainCanvas;
+//		this.addUnEtatCanvas(c);
+		ArrayList<Object> collection=fm.getMainCollection();
+		for(Object o:collection) {
+			if(o instanceof FigureColoree) {
+				judgeShape((FigureColoree)o);
+			}else if(o instanceof ArrayList<?>) {
+				ArrayList<Point> points=(ArrayList<Point>)o;
+				int x1 = 1, y1 = 1, x2 = 0, y2 = 0;
+				for (Point point : points) {
+					x2 = (int) point.RendreX();
+					y2 = (int) point.RendreY();   
+
+					if (y1 != 1) {
+						MainController.gc.setLineWidth(point.getG());
+						MainController.gc.setStroke(point.getC());
+						MainController.gc.strokeLine(x1, y1, x2, y2);
+					}
+					x1 = x2;
+					y1 = y2;
+
+				}
+			}else {
+				throw new NullPointerException("error");
+			}
 		}
-		this.afficherListLine();
+		Canvas c=mainCanvas;
+		this.addUnEtatCanvas(c);
 	}
-	
+
 	public String getFigureType() {
 		return this.TypeFigure;
 	}
@@ -50,7 +85,8 @@ public class FabriqueFigure {
 	}
 
 	//长方形主体
-	public void tempdrawRectangle(MouseEvent e) {
+	public void tempdrawFigure(MouseEvent e) {
+
 		EffaceretDessiner();//擦除旧有的，画上新的
 		FigureColoree fc=fm.getFigureenCours();
 		Point[] VertexPoints=((Polygone)fc).getPointsVertex();
@@ -73,15 +109,17 @@ public class FabriqueFigure {
 			VertexPoints[2]=new Point((e.getX()+fc.getVertexX())/2,thirdVertexY,fc.getColorCorant());//横坐标(pX1+pX2)/2
 
 		}else if(fc instanceof LigneDroit) {
-
 			VertexPoints[0]=new Point(fc.getVertexX(),fc.getVertexY(),fc.getColorCorant());
 			VertexPoints[1]=new Point(e.getX(),e.getY(),fc.getColorCorant());
 
 		}else if(fc instanceof Ellipse) {
-
-			VertexPoints[0]=new Point(fc.getVertexX(),fc.getVertexY(),fc.getColorCorant());
-			VertexPoints[1]=new Point(e.getX(),e.getY(),fc.getColorCorant());
-
+			if(fc.getVertexX()<e.getX()) {
+				VertexPoints[0]=new Point(fc.getVertexX(),fc.getVertexY(),fc.getColorCorant());
+				VertexPoints[1]=new Point(e.getX(),e.getY(),fc.getColorCorant());
+			}else {
+				VertexPoints[1]=new Point(fc.getVertexX(),fc.getVertexY(),fc.getColorCorant());
+				VertexPoints[0]=new Point(e.getX(),e.getY(),fc.getColorCorant());
+			}
 		}
 		((Polygone)fc).setPointsVertex(VertexPoints);
 		judgeShape(fc);
@@ -105,6 +143,7 @@ public class FabriqueFigure {
 		f.setEnSelection(true);
 		((Polygone)f).afficher(MainController.gc);
 		this.checkChoix(this.TypeFigure);
+
 	}
 
 	void judgeShape(FigureColoree fc) {
@@ -131,7 +170,9 @@ public class FabriqueFigure {
 			MainController.gc.fillPolygon(PointsX, PointsY,((Triangle) fc).getNbPointsVertex());
 		}else if(fc instanceof LigneDroit) {
 
+			System.out.println(((LigneDroit)fc).getGrosseur());
 			MainController.gc.setStroke(fc.getColorCorant());
+			MainController.gc.setLineWidth(((LigneDroit)fc).getGrosseur());
 			MainController.gc.strokeLine(PointsX[0], PointsY[0], PointsX[1], PointsY[1]);
 
 		}else if(fc instanceof Ellipse) {
@@ -144,7 +185,7 @@ public class FabriqueFigure {
 		}
 
 	}
-	
+
 	public void checkChoix(String FigureType) {
 		switch(FigureType) {
 		case "Rectangle":
@@ -164,26 +205,24 @@ public class FabriqueFigure {
 			break;
 		}
 	}
-	
-	public void afficherListLine() {
-		Dessiner d=this.fm.getDessiner();
-		if(d!=null) {
-			ArrayList<ArrayList<Point>> listlines=d.getLignes();
-			for (ArrayList<Point> points : listlines) { // for(A a : nom de list) A is
-				int x1 = 1, y1 = 1, x2 = 0, y2 = 0;
-				for (Point point : points) {
-					x2 = (int) point.RendreX();
-					y2 = (int) point.RendreY();   
 
-					if (y1 != 1) {
-						MainController.gc.setStroke(point.getC());
-						MainController.gc.strokeLine(x1, y1, x2, y2);
-					}
-					x1 = x2;
-					y1 = y2;
+	public void addUnEtatCanvas(Canvas c) {
+		this.historyCanvas.add(c);
+	}
 
-				}
-			}
+	public ArrayList<Canvas> getHistoryCanvas(){
+		return this.historyCanvas;
+	}
+
+	public void undo() {
+		int indice=historyCanvas.size()-2;
+		this.mainCanvas=this.historyCanvas.get(indice);
+		for(int i=historyCanvas.size()-1;i>indice;i--) {//把多出来的状态全部删除
+			this.historyCanvas.remove(i);
 		}
+	}
+	
+	public void redo() {
+		
 	}
 }

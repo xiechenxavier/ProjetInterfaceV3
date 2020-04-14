@@ -1,7 +1,7 @@
 package Modele;
 
 public class LigneDroit extends Polygone{
-
+	private double grosseur;
 	public LigneDroit(int nbPointsVertex) {
 		super(nbPointsVertex);
 		// TODO Auto-generated constructor stub
@@ -21,6 +21,49 @@ public class LigneDroit extends Polygone{
 		}else {
 			return (x>=x1)&&(x<=x2)&&(y==(k*x+b));
 		}
+	}
+
+	@Override
+	public void transformation(double dx, double dy, int id_pts) {
+		// TODO Auto-generated method stub
+		this.PointsVertex[id_pts].translation(dx, dy);
+	}
+	//the current grosseur
+	public double getGrosseur() {
+		return this.grosseur;
+	}
+	//set Grosseur
+	public void setGrosseur(double int_grosseur) {
+		if(int_grosseur>0) {
+			this.grosseur=int_grosseur;
+		}
+	}
+
+	@Override
+	public void Redimentionner(double width, double height) {
+		// TODO Auto-generated method stub
+		Point[] VetexPoints=this.getPointsVertex();
+		VetexPoints[1].setX(VetexPoints[0].RendreX()+width);
+		VetexPoints[1].setY(VetexPoints[0].RendreY()+height);
+		this.setPointsVertex(VetexPoints);
+	}
+
+	@Override
+	public double getLargeur() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getHauteur() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "LigneDroit";
 	}
 
 }

@@ -6,11 +6,13 @@ public class Point {
 	
 	private double x,y;
 	private Color c;
+	private double G;
 
 	public Point(double a,double b,Color c) {
 		x=a;
 		y=b;
 		this.c=c;
+		
 	}
 	
 	public Point (Point p) {
@@ -36,7 +38,7 @@ public class Point {
 		this.y+=value;
 	}
 	
-	public void translation(int dx, int dy) {
+	public void translation(double dx, double dy) {
 		this.x+=dx;
 		this.y+=dy;
 	}
@@ -61,12 +63,18 @@ public class Point {
 		String res="X :"+this.x+",Y :"+this.y;
 		return res;
 	}
-
+	
 	public Color getC() {
 		return c;
 	}
 
 	public void setC(Color c) {
 		this.c = c;
+	}
+	public double getG() {
+		return this.G;
+	}
+	public void setG(double G) {
+		this.G=G;
 	}
 }
