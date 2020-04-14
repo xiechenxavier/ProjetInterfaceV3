@@ -112,7 +112,7 @@ public class MainController implements Initializable{
 		Eraser.setStyle("-fx-background-color: white");
 		//		mainCanvas.setStyle("-fx-background-color: white");
 		setColor.setValue(Color.BLACK);
-		ObservableList<String> List=FXCollections.observableArrayList("Option","Deplacer","Reforme","Flotter","Couler");
+		ObservableList<String> List=FXCollections.observableArrayList("Option","Deplacer","Reforme");
 		cbb.getItems().addAll(List);
 		cbb.setPrefWidth(97);
 		cbb.setValue("Option");//默认值为请做出选择--当前的情况没有任何操作图形的功能
@@ -282,11 +282,6 @@ public class MainController implements Initializable{
 				mainCanvas.setOnMouseDragged(eventP->mp.ReFormeByDragging(eventP));
 
 				mainCanvas.setOnMouseReleased(eventP->mp.lacher());//松开即停止拖动
-
-			}else if(manipuleOption.equals("Flotter")) {
-				//				mainCanvas.setOnMouseClicked(eventP->mp.FlotterUneGraphe(eventP));
-
-			}else if(manipuleOption.equals("Couler")) {
 
 			}
 		}
