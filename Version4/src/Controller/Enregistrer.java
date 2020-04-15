@@ -99,7 +99,7 @@ public class Enregistrer {
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = fileChooser.showOpenDialog(null);//这个就是打开的文件
 		//接下来就要开始读取文件中的内容了
-		char cbuf[] = new char[10000];
+		char cbuf[] = new char[1000000000];
 		if(file!=null) {
 			InputStreamReader input =new InputStreamReader(new FileInputStream(file),"UTF-8");
 			int len =input.read(cbuf);

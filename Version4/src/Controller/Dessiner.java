@@ -32,8 +32,8 @@ public class Dessiner{
 	}
 
 	public void MousePressedF(MouseEvent e) {
-		sourisX=e.getX();
-		sourisY=e.getY();
+		sourisX=e.getX()-5;
+		sourisY=e.getY()+30;
 		Point p=null;
 		if(this.Mode.equals("Effaceur")) {
 			p=new Point(sourisX,sourisY,Color.web("#f0f0f0"));
@@ -43,16 +43,16 @@ public class Dessiner{
 			p.setG(grosseur);
 		}
 		points.add(p);
-		//		System.out.println(e.getX()+","+e.getY());
+		//		System.out.println(e.getX()-5+","+e.getY()+30);
 		System.out.println(this.mc.getColor());
 	}
 	public void MouseDrag(MouseEvent e) {
 		Point p=null;
 		if(this.Mode.equals("Effaceur")) {
-			p=new Point(e.getX(),e.getY(),Color.web("#f0f0f0"));
+			p=new Point(e.getX()-5,e.getY()+30,Color.web("#f0f0f0"));
 			p.setG(Effgrosseur);
 		}else {
-			p=new Point(e.getX(),e.getY(),this.mc.getColor());
+			p=new Point(e.getX()-5,e.getY()+30,this.mc.getColor());
 			p.setG(grosseur);
 		}
 		points.add(p);
@@ -68,7 +68,7 @@ public class Dessiner{
 		}
 	}
 	public void MouseReleased(MouseEvent e) {
-		Point p=new Point(e.getX(),e.getY(),Color.web("#f0f0f0"));
+		Point p=new Point(e.getX()-5,e.getY()+30,Color.web("#f0f0f0"));
 		p.setG(Effgrosseur);
 		points.add(p);
 		lignes.add(points);

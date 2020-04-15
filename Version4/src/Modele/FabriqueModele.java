@@ -39,6 +39,9 @@ public class FabriqueModele {
 //	public Dessiner getDessiner() {
 //		return this.d;
 //	}
+	public void ViderObject() {
+		this.mainCollection=new ArrayList<Object>();
+	}
 	
 	public void DeSelectionnerAll() {
 		for(FigureColoree f:figures) {
@@ -58,6 +61,11 @@ public class FabriqueModele {
 	public ArrayList<Object> getMainCollection(){
 		return this.mainCollection;
 	}
+	
+	public void setMainCollection(ArrayList<Object> mainCollection){
+		this.mainCollection=mainCollection;
+	}
+	
 	public void AddObjectCollection(Object o) {
 		this.mainCollection.add(o);
 	}

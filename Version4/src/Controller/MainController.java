@@ -17,6 +17,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
@@ -120,6 +122,8 @@ public class MainController implements Initializable{
 		this.Selectionner.setSelected(false);
 		LargeurVal.setText("0");
 		HauteurVal.setText("0");
+		FormesPane.setCursor(Cursor.HAND);
+//		mainCanvas.setCursor(Cursor.CROSSHAIR);
 	}
 
 	public MainController() {
@@ -148,6 +152,8 @@ public class MainController implements Initializable{
 		this.MainPane.setOnKeyPressed(null);//没有选择的时候不允许通过键盘删除图形
 		
 		if(e.getSource()==Pinceau) {
+			ImageCursor cursor = new ImageCursor(new Image("Images/pinceauIcon.png"));
+			mainCanvas.setCursor(cursor);
 			d.ChangetoEffaceur("dessin");
 			mainCanvas.setOnMousePressed(eventP -> 
 
@@ -160,6 +166,8 @@ public class MainController implements Initializable{
 			d.MouseReleased(eventP)
 					);
 		}else if(e.getSource()==Eraser) {
+			ImageCursor cursor = new ImageCursor(new Image("Images/eraserIcon.png"));
+			mainCanvas.setCursor(cursor);
 			d.ChangetoEffaceur("Effaceur");
 			mainCanvas.setOnMousePressed(eventP -> 
 			{d.MousePressedF(eventP);}
@@ -171,7 +179,7 @@ public class MainController implements Initializable{
 			d.MouseReleased(eventP)
 					);
 		}else{
-		
+			mainCanvas.setCursor(Cursor.CROSSHAIR);
 			if(e.getSource()==Ligne) {
 				this.fm.construit(new LigneDroit(2));
 				ff.setFigureType("LigneDroit");
@@ -270,7 +278,8 @@ public class MainController implements Initializable{
 			String manipuleOption=cbb.getSelectionModel().getSelectedItem().toString();
 			if(manipuleOption.equals("Deplacer")) {
 				//
-
+				ImageCursor cursor = new ImageCursor(new Image("Images/resize-four-directions.png"));
+				mainCanvas.setCursor(cursor);
 				mainCanvas.setOnMousePressed(eventP -> mp.Pressed(eventP,"Deplacer"));
 
 				mainCanvas.setOnMouseReleased(eventP->mp.lacher());//松开即停止拖动
@@ -317,8 +326,9 @@ public class MainController implements Initializable{
 	//EffcerLaPanel
 	public void EffacerLaPanel(ActionEvent e) {
 		gc.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
-		d.ViderListeLignes();
-		this.fm.ViderFigures();
+//		d.ViderListeLignes();
+//		this.fm.ViderFigures();
+		this.fm.ViderObject();
 	}
 	//锟斤拷取锟斤拷前锟斤拷锟斤拷色
 	public Color getColor() {
