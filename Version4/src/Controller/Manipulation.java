@@ -181,7 +181,7 @@ public class Manipulation {
 	//当前选中的那个图形宽度
 	public double getSelectedFormWidth() throws Exception{
 //		forms=fm.getFigures();
-		if(forms.isEmpty()) {
+		if(totalCollection.isEmpty()) {
 			throw new Exception("list est vide");
 		}else {
 			if(FormId<0) {//暂时还没有点击
@@ -195,7 +195,7 @@ public class Manipulation {
 	//当前选中的那个图形长度
 	public double getSelectedFormHeight() throws Exception {
 		forms=fm.getFigures();
-		if(forms.isEmpty()) {
+		if(totalCollection.isEmpty()) {
 			throw new Exception("list est vide");
 		}else {
 			if(FormId<0) {//暂时还没有点击
@@ -212,7 +212,7 @@ public class Manipulation {
 	public void DeleteParKeyBoard(KeyEvent ke) {
 //		forms=fm.getFigures();
 		FigureColoree fc=this.fm.getFigureenCours();
-		if(forms.isEmpty()) {//如果forms为空则不处理，如果FormId存在
+		if(totalCollection.isEmpty()) {//如果forms为空则不处理，如果FormId存在
 			throw new NullPointerException("forms list est vide");
 		}else {
 			if(FormId<0) {//如果还没有选中，但是forms不为空，说明此时已经存在图形，但是还没有选中任何一个

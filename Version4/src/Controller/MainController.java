@@ -286,6 +286,7 @@ public class MainController implements Initializable{
 
 				mainCanvas.setOnMouseDragged(eventP->mp.dragFigure(eventP));//拖动图形
 			}else if(manipuleOption.equals("Reforme")){
+				mainCanvas.setCursor(null);
 				mainCanvas.setOnMousePressed(eventP->{mp.Pressed(eventP, "Reforme");});
 
 				mainCanvas.setOnMouseDragged(eventP->mp.ReFormeByDragging(eventP));
@@ -326,8 +327,8 @@ public class MainController implements Initializable{
 	//EffcerLaPanel
 	public void EffacerLaPanel(ActionEvent e) {
 		gc.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
-//		d.ViderListeLignes();
-//		this.fm.ViderFigures();
+		d.ViderListeLignes();
+		this.fm.ViderFigures();
 		this.fm.ViderObject();
 	}
 	//锟斤拷取锟斤拷前锟斤拷锟斤拷色
