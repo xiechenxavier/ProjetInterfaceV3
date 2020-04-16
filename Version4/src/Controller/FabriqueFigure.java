@@ -77,6 +77,37 @@ public class FabriqueFigure {
 		this.addUnEtatCanvas(c);
 	}
 
+	public void EffaceretDessinerV2() {
+		MainController.gc.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
+		ArrayList<FigureColoree> forms=fm.getFigures();
+		for(FigureColoree f:forms) {
+			judgeShape(f);
+		}
+		this.afficherListLine();
+		Canvas c=mainCanvas;
+		this.addUnEtatCanvas(c);
+	}
+	public void afficherListLine() {
+//		Dessiner d=this.fm.getDessiner();
+//		if(d!=null) {
+			ArrayList<ArrayList<Point>> listlines=Dessiner.lignes;
+			for (ArrayList<Point> points : listlines) { // for(A a : nom de list) A is
+				int x1 = 1, y1 = 1, x2 = 0, y2 = 0;
+				for (Point point : points) {
+					x2 = (int) point.RendreX();
+					y2 = (int) point.RendreY();   
+
+					if (y1 != 1) {
+						MainController.gc.setStroke(point.getC());
+						MainController.gc.strokeLine(x1, y1, x2, y2);
+					}
+					x1 = x2;
+					y1 = y2;
+
+				}
+			}
+//		}
+	}
 	public String getFigureType() {
 		return this.TypeFigure;
 	}

@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -26,17 +27,23 @@ public class Enregistrer {
 	private FabriqueModele fm;
 	private FabriqueFigure ff;
 	private JSONArray lignesArray,figuresArray;//lignes与figures两个数组
+	private boolean save_inAfile_Exist;
+	private String file_Path;
+
 	public Enregistrer(FabriqueModele fm,FabriqueFigure ff/*ArrayList<ArrayList<Point>> lignes,ArrayList<FigureColoree> figures*/) {
 		this.fm=fm;
 		this.ff=ff;
 		lignesArray = new JSONArray();
 		figuresArray=new JSONArray();//装所有的figure
+		save_inAfile_Exist=false;
+		file_Path="";
 	}
 
 	public void generateFileJson() {
 		ArrayList<Object> mainCollection=this.fm.getMainCollection();
 		ArrayList<ArrayList<Point>> lignes=new ArrayList<ArrayList<Point>>();//线
 		ArrayList<FigureColoree> figures=new ArrayList<FigureColoree>();
+
 		for(Object o:mainCollection) {
 			if(o instanceof ArrayList<?>) {
 				lignes.add((ArrayList<Point>)o);
@@ -46,7 +53,7 @@ public class Enregistrer {
 				throw new NullPointerException("null figures");
 			}
 		}
-//		ArrayList<FigureColoree> figures=this.fm.getFigures();//图
+		//		ArrayList<FigureColoree> figures=this.fm.getFigures();//图
 
 		for(ArrayList<Point> ligne:lignes) {//这个是装数组的数组
 			JSONArray pointsArray = new JSONArray();
@@ -91,8 +98,8 @@ public class Enregistrer {
 
 	public void OpenFile() throws IOException {
 
-//		ArrayList<ArrayList<Point>> lignesList=new ArrayList<ArrayList<Point>>();
-//		ArrayList<FigureColoree> figuresList=new ArrayList<FigureColoree>();
+		//		ArrayList<ArrayList<Point>> lignesList=new ArrayList<ArrayList<Point>>();
+		//		ArrayList<FigureColoree> figuresList=new ArrayList<FigureColoree>();
 
 		FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
@@ -167,29 +174,62 @@ public class Enregistrer {
 
 	public void SaveFile() {
 		this.generateFileJson();
+		if(this.save_inAfile_Exist&&!this.file_Path.equals("")) {//如果文件存在则直接保存
+			/* 写入Txt文件 */
+			try {
+				 RandomAccessFile writer = new RandomAccessFile(this.file_Path, "rw");
+			        writer.seek(0);
+			        
+			        JSONObject totalData = new JSONObject();
+					totalData.put("Lignes", this.lignesArray);
+					totalData.put("Figures", this.figuresArray);
+
+					String content=totalData.toString();
+
+			        //写入中文的时候防止乱码
+			        writer.writeUTF(content);
+			        writer.close();
+			        System.out.println("文件保存成功");
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}else {
+
+			FileChooser fileChooser1 = new FileChooser();
+			fileChooser1.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON", "*.json"));
+			fileChooser1.setTitle("Save Image");
+			//		System.out.println(pic.getId());
+			File file = fileChooser1.showSaveDialog(null);//the file to save, we save it on the path where we chose
+			try {
+				file.createNewFile(); // 创建新文件
+				BufferedWriter out;
+				out = new BufferedWriter(new FileWriter(file));
+
+				JSONObject totalData = new JSONObject();
+				totalData.put("Lignes", this.lignesArray);
+				totalData.put("Figures", this.figuresArray);
+
+				String content=totalData.toString();
+
+				out.write(content); 
+				out.flush(); // 把缓存区内容压入文件
+				out.close(); // 
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void Nouvelle() {
 		FileChooser fileChooser1 = new FileChooser();
 		fileChooser1.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON", "*.json"));
-		fileChooser1.setTitle("Save Image");
-		//		System.out.println(pic.getId());
+		fileChooser1.setTitle("Nouveau Image");
 		File file = fileChooser1.showSaveDialog(null);//the file to save, we save it on the path where we chose
-		try {
-			file.createNewFile(); // 创建新文件
-			BufferedWriter out;
-			out = new BufferedWriter(new FileWriter(file));
-
-			JSONObject totalData = new JSONObject();
-			totalData.put("Lignes", this.lignesArray);
-			totalData.put("Figures", this.figuresArray);
-
-			String content=totalData.toString();
-
-			out.write(content); 
-			out.flush(); // 把缓存区内容压入文件
-			out.close(); // 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.file_Path=file.getPath();
+		save_inAfile_Exist=true;
 	}
 
 

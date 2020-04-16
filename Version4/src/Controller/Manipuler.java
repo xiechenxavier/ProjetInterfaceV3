@@ -38,8 +38,6 @@ public class Manipuler {
 	//点击事件的方法,点击是为了选择一个图形
 	public void ClickChoose(MouseEvent e) {
 		forms=fm.getFigures();
-		ArrayList<Object> totalCollection=fm.getMainCollection();
-		
 		boolean isAccesse=false;
 		DeSelectionnerTous();
 		sourisX=e.getX();
@@ -54,24 +52,7 @@ public class Manipuler {
 				break;
 			}
 		}
-		int formIdObject=0;//当前对象数组中的图形下标
-		for(int j=0;j<totalCollection.size();j++) {
-			if(totalCollection.get(j) instanceof FigureColoree) {
-				if((FigureColoree)totalCollection.get(j)==forms.get(FormId)) {
-					formIdObject=j;
-					break;
-				}
-			}
-		}
-		int FinalformIdObject=0;//对象容器中最后一个图形
-		for(int x=0;x<totalCollection.size();x++) {
-			if(totalCollection.get(x) instanceof FigureColoree) {
-				if((FigureColoree)totalCollection.get(x)==forms.get(forms.size()-1)) {
-					formIdObject=x;
-					break;
-				}
-			}
-		}
+	
 		if(!isAccesse) {//如果点击的位置在所有图形的外部，则取消选定
 			DeSelectionnerTous();
 		}else {
@@ -80,13 +61,9 @@ public class Manipuler {
 				FigureColoree temp=forms.get(LastIndice);//第一个提出来
 				forms.set(LastIndice, forms.get(FormId));//把第一个换成现在的
 				forms.set(FormId, temp);//把现在的换成第一个
-				FigureColoree ObjectTemp=(FigureColoree)totalCollection.get(FinalformIdObject);
-				totalCollection.set(FinalformIdObject,totalCollection.get(formIdObject) );
-				totalCollection.set(formIdObject, ObjectTemp);
 			}
 			((Polygone)forms.get(FormId)).afficher(MainController.gc);
 			this.fm.setFigures(forms);
-			this.fm.setMainCollection(totalCollection);
 		}
 	}
 
@@ -123,7 +100,7 @@ public class Manipuler {
 			forms.set(FormId, f);
 			sourisX=e.getX();
 			sourisY=e.getY();
-			this.ff.EffaceretDessiner();
+			this.ff.EffaceretDessinerV2();
 		}
 	}
 
@@ -146,7 +123,7 @@ public class Manipuler {
 			this.forms.get(FormId).setColorCorant(c);
 		}
 		//		System.out.println(this.updatableColor);
-		this.ff.EffaceretDessiner();
+		this.ff.EffaceretDessinerV2();
 	}
 
 
@@ -162,7 +139,7 @@ public class Manipuler {
 	//取消对所有图形的选定
 	public void DeSelectionnerTous() {
 		this.fm.DeSelectionnerAll();
-		this.ff.EffaceretDessiner();
+		this.ff.EffaceretDessinerV2();
 	}
 
 	public void ReFormeByDragging(MouseEvent e) {

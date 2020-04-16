@@ -61,7 +61,7 @@ public class MainController implements Initializable{
 	@FXML
 	public ColorPicker setColor;
 	@FXML
-	public MenuItem Effacer,Enregistrer,Ouvrir,Annuler;
+	public MenuItem Effacer,Enregistrer,Ouvrir,Annuler,Nouvelle;
 	@FXML
 	private ComboBox cbb;
 	@FXML 
@@ -278,8 +278,7 @@ public class MainController implements Initializable{
 			String manipuleOption=cbb.getSelectionModel().getSelectedItem().toString();
 			if(manipuleOption.equals("Deplacer")) {
 				//
-				ImageCursor cursor = new ImageCursor(new Image("Images/resize-four-directions.png"));
-				mainCanvas.setCursor(cursor);
+				mainCanvas.setCursor(Cursor.MOVE);
 				mainCanvas.setOnMousePressed(eventP -> mp.Pressed(eventP,"Deplacer"));
 
 				mainCanvas.setOnMouseReleased(eventP->mp.lacher());//松开即停止拖动
@@ -299,6 +298,7 @@ public class MainController implements Initializable{
 
 	//activer select checkBox
 	public void Selected(ActionEvent e) {
+		mainCanvas.setCursor(Cursor.HAND);
 		if(this.Selectionner.isSelected()) {//当CheckBox被选择的时候，表示可以开始操作了
 			mainCanvas.setOnMouseClicked(eventP->mp.ClickChoose(eventP));
 			mainCanvas.setOnMousePressed(null);
@@ -343,6 +343,10 @@ public class MainController implements Initializable{
 	//打开一个文件
 	public void OpenFromFileJson(ActionEvent e)throws IOException {
 		this.E.OpenFile();
+	}
+	//新建一个文件
+	public void NewFile(ActionEvent e)throws IOException {
+		this.E.Nouvelle();
 	}
 	
 	public void UndoCanvas(ActionEvent e) {

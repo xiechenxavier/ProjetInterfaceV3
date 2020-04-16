@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 public class Dessiner{
 	double sourisX,sourisY;//起始点鼠标进入点
 	ArrayList<Point> points;
-	ArrayList<ArrayList<Point>> lignes;
+	static ArrayList<ArrayList<Point>> lignes;
 	FabriqueModele fm;
 	//	GraphicsContext MainController.gc;
 	public static final double grosseur=1;

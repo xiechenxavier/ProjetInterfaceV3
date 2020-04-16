@@ -23,7 +23,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="Fichier">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Nouvelle" />
+                  <MenuItem fx:id="Nouvelle" mnemonicParsing="false" onAction="#NewFile" text="Nouvelle" />
                   <MenuItem fx:id="Ouvrir" mnemonicParsing="false" onAction="#OpenFromFileJson" text="Ouvrir" />
                   <MenuItem fx:id="Enregistrer" mnemonicParsing="false" onAction="#SaveToFileJson" text="Enregistrer" />
                   <SeparatorMenuItem mnemonicParsing="false" />
