@@ -20,6 +20,10 @@ import Modele.Point;
 import Modele.Polygone;
 import Modele.Rectangle;
 import Modele.Triangle;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 
@@ -252,5 +256,28 @@ public class Enregistrer {
 			break;
 		}
 		return fc;
+	}
+	public void keyEvent(KeyEvent e) {
+		KeyCombination KeyNew = new KeyCodeCombination(KeyCode.N,KeyCombination.CONTROL_DOWN);
+		KeyCombination KeySave = new KeyCodeCombination(KeyCode.S,KeyCombination.CONTROL_DOWN);
+		KeyCombination KeyOpen = new KeyCodeCombination(KeyCode.O,KeyCombination.CONTROL_DOWN);
+
+		if(KeyNew.match(e)) {
+			System.out.println("Ctrl+N preseed");
+			this.Nouvelle();
+		}
+		if(KeySave.match(e)) {
+			System.out.println("Ctrl+S preseed");
+			this.SaveFile();
+		}
+		if(KeyOpen.match(e)) {
+			System.out.println("Ctrl+O preseed");
+			try {
+				this.OpenFile();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 	}
 }

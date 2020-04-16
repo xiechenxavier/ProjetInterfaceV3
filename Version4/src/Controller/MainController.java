@@ -33,6 +33,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -123,7 +125,7 @@ public class MainController implements Initializable{
 		LargeurVal.setText("0");
 		HauteurVal.setText("0");
 		FormesPane.setCursor(Cursor.HAND);
-//		mainCanvas.setCursor(Cursor.CROSSHAIR);
+		//		mainCanvas.setCursor(Cursor.CROSSHAIR);
 	}
 
 	public MainController() {
@@ -150,7 +152,7 @@ public class MainController implements Initializable{
 		this.cbb.setValue("Option");//让操作功能回复到初始化的状态
 		this.Selectionner.setSelected(false);
 		this.MainPane.setOnKeyPressed(null);//没有选择的时候不允许通过键盘删除图形
-		
+
 		if(e.getSource()==Pinceau) {
 			ImageCursor cursor = new ImageCursor(new Image("Images/pinceauIcon.png"));
 			mainCanvas.setCursor(cursor);
@@ -323,7 +325,7 @@ public class MainController implements Initializable{
 		figureCourant.changeColor(c);
 		mp.upDateColor(c);
 	}
-	
+
 	//EffcerLaPanel
 	public void EffacerLaPanel(ActionEvent e) {
 		gc.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
@@ -335,7 +337,7 @@ public class MainController implements Initializable{
 	public Color getColor() {
 		return this.setColor.getValue();
 	}
-	
+
 	//保存部分:la partie de l'enregistrement
 	public void SaveToFileJson(ActionEvent e) throws IOException {
 		this.E.SaveFile();
@@ -348,10 +350,14 @@ public class MainController implements Initializable{
 	public void NewFile(ActionEvent e)throws IOException {
 		this.E.Nouvelle();
 	}
-	
+
 	public void UndoCanvas(ActionEvent e) {
 		this.ff.undo();
 		System.out.println("ca marche");
+	}
+
+	public void keyevent(KeyEvent e) throws IOException {
+		this.E.keyEvent(e);
 	}
 
 	public void alertInformations(){
