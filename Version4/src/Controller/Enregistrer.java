@@ -62,7 +62,7 @@ public class Enregistrer {
 		for(ArrayList<Point> ligne:lignes) {//这个是装数组的数组
 			JSONArray pointsArray = new JSONArray();
 			for(Point p:ligne) {
-				String formatJson="{'x':"+p.RendreX()+",'y':"+p.RendreY()+",'Color':"+p.getC()+"}";
+				String formatJson="{'x':"+p.RendreX()+",'y':"+p.RendreY()+",'Color':"+p.getC()+",'grosseur':"+p.getG()+"}";
 				JSONObject jsonObject2 = new JSONObject(formatJson);//一个点的数据
 				pointsArray.put(jsonObject2);//以数组形式储存
 			}
@@ -134,7 +134,10 @@ public class Enregistrer {
 					Color cpt=Color.web(pt.getString("Color"));
 					double ValX=pt.getDouble("x");//横坐标
 					double ValY=pt.getDouble("y");//纵坐标
-					currListPoint.add(new Point(ValX,ValY,cpt));
+					double grosseur=pt.getDouble("grosseur");
+					Point p1=new Point(ValX,ValY,cpt);
+					p1.setG(grosseur);
+					currListPoint.add(p1);
 				}
 				this.fm.getMainCollection().add(currListPoint);
 			}
@@ -220,10 +223,11 @@ public class Enregistrer {
 				out.write(content); 
 				out.flush(); // 把缓存区内容压入文件
 				out.close(); // 
-			} catch (IOException e) {
+			} catch (IOException|NullPointerException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		}
 	}
 

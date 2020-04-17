@@ -1,6 +1,8 @@
 package Controller;
 
 import java.util.ArrayList;
+//import java.util.HashMap;
+
 import Modele.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -36,40 +38,54 @@ public class Manipulation {
 		FormId=-1;
 	}
 	//点击事件的方法,点击是为了选择一个图形
+	@SuppressWarnings("unchecked")
 	public void ClickChoose(MouseEvent e) {
 		boolean isAccesse=false;
+		boolean Selectable=true;//默认情况为可以
+
 		DeSelectionnerTous();
 		sourisX=e.getX();
 		sourisY=e.getY();
-		//获得容器中最后一个图形的ID
+		this.totalCollection=this.fm.getMainCollection();
+
+		for(int i=this.totalCollection.size()-1;i>=0;i--) {//总容器中的当前遍历下标
+			if(totalCollection.get(i) instanceof FigureColoree&&((Polygone)totalCollection.get(i)).Accesseur(sourisX, sourisY)) {//如果是图形
+
+				((FigureColoree)totalCollection.get(i)).setEnSelection(true);
+				isAccesse=true;
+				this.Updatable(true);//可以更改颜色
+				this.setFormId(i);//获得点击图形的ID
+				break;
+			}
+		}
+		//获得容器中最后一个图形的Indice
 		for(int j=this.totalCollection.size()-1;j>=0;j--) {
 			if(totalCollection.get(j) instanceof FigureColoree) {
 				this.FormFinalId=j;
 				break;
 			}
 		}
-		for(int i=this.totalCollection.size()-1;i>=0;i--) {//总容器中的当前遍历下标
-			if(totalCollection.get(i) instanceof FigureColoree) {//如果是图形
-				if(((Polygone)totalCollection.get(i)).Accesseur(sourisX, sourisY)) {
-					((FigureColoree)totalCollection.get(i)).setEnSelection(true);
-					isAccesse=true;
-					this.Updatable(true);//可以更改颜色
-					this.FormId=i;
-					break;
-				}
-			}
-		}
+
 		if(!isAccesse) {//如果点击的位置在所有图形的外部，则取消选定
-			System.out.println(e.getX()+","+e.getY());
 			DeSelectionnerTous();
 		}else {
-			if(totalCollection.get(FormId)!=null) {
-				FigureColoree ObjectTemp=(FigureColoree)totalCollection.get(FormFinalId);
-				totalCollection.set(FormFinalId,totalCollection.get(FormId) );
-				totalCollection.set(FormId, ObjectTemp);
+			//判断是否这个选择图形在list之后有与之重合的白线
+			for(int z=this.fm.getMainCollection().size()-1;z>this.getFormId();z--) {
+				Object ob=this.fm.getMainCollection().get(z);
+				FigureColoree f=(FigureColoree) this.fm.getMainCollection().get(this.getFormId());
+				if(ob instanceof ArrayList<?>&&((ArrayList<Point>)ob).get(0).getC().equals(Color.web("#f0f0f0"))&&this.Cheveauchement((Polygone)f,(ArrayList<Point>)ob)) {//是白线线
+					Selectable=false;
+					System.out.println(Selectable);
+				}
 			}
-			((Polygone)totalCollection.get(FormId)).afficher(MainController.gc);
-//			this.fm.setFigures(forms);
+			if(totalCollection.get(this.getFormId())!=null&&Selectable) {
+				FigureColoree ObjectTemp=(FigureColoree)totalCollection.get(this.getFormId());//获取这个图形所在位置
+				for(int i=this.getFormId();i<FormFinalId;i++) {
+					totalCollection.set(i,totalCollection.get(i+1));
+				}
+				totalCollection.set(FormFinalId, ObjectTemp);
+				((Polygone)totalCollection.get(FormFinalId)).afficher(MainController.gc);
+			}
 			this.fm.setMainCollection(totalCollection);
 		}
 	}
@@ -78,7 +94,7 @@ public class Manipulation {
 
 		sourisX=e.getX();
 		sourisY=e.getY();
-		
+
 		for(int i=this.totalCollection.size()-1;i>=0;i--) {//总容器中的当前遍历下标
 			if(totalCollection.get(i) instanceof FigureColoree) {//如果是图形
 				if(((Polygone)totalCollection.get(i)).Accesseur(sourisX, sourisY)) {
@@ -125,6 +141,12 @@ public class Manipulation {
 		this.Reformable=res;
 	}
 
+	public int getFormId() {
+		return this.FormId;
+	}
+	public void setFormId(int x) {
+		this.FormId=x;
+	}
 	//更新颜色
 	public void upDateColor(Color c) {
 		if(this.updatableColor) {
@@ -175,13 +197,13 @@ public class Manipulation {
 		FigureColoree f=(FigureColoree)totalCollection.get(FormId);
 		((Polygone)f).Redimentionner(newWidth, newHeight);
 		totalCollection.set(FormId, f);
-//		this.fm.setFigures(forms);
+		//		this.fm.setFigures(forms);
 		this.fm.setMainCollection(totalCollection);
 		this.ff.EffaceretDessiner();
 	}
 	//当前选中的那个图形宽度
 	public double getSelectedFormWidth() throws Exception{
-//		forms=fm.getFigures();
+		//		forms=fm.getFigures();
 		if(totalCollection.isEmpty()) {
 			throw new Exception("list est vide");
 		}else {
@@ -208,10 +230,21 @@ public class Manipulation {
 		}
 	}
 
+	//画的橡皮擦线是否与图形相交
+	public boolean Cheveauchement(Polygone f,ArrayList<Point> ld) {
+		boolean res=false;
+		for(Point p:ld) {
+			if(((Polygone)f).Accesseur(p.RendreX(), p.RendreY())) {//如果在范围内即相交
+				res=true;
+				break;
+			}
+		}
+		return res;
+	}
 
 	//delete by keyboard
 	public void DeleteParKeyBoard(KeyEvent ke) {
-//		forms=fm.getFigures();
+		//		forms=fm.getFigures();
 		FigureColoree fc=this.fm.getFigureenCours();
 		if(totalCollection.isEmpty()) {//如果forms为空则不处理，如果FormId存在
 			throw new NullPointerException("forms list est vide");
@@ -227,7 +260,7 @@ public class Manipulation {
 			}
 		}
 		System.out.println("ca marche");
-//		this.fm.setFigures(forms);
+		//		this.fm.setFigures(forms);
 		this.fm.setMainCollection(totalCollection);
 		this.ff.EffaceretDessiner();
 	}

@@ -44,7 +44,6 @@ public class Dessiner{
 		}
 		points.add(p);
 		//		System.out.println(e.getX()-5+","+e.getY()+30);
-		System.out.println(this.mc.getColor());
 	}
 	public void MouseDrag(MouseEvent e) {
 		Point p=null;
@@ -68,8 +67,14 @@ public class Dessiner{
 		}
 	}
 	public void MouseReleased(MouseEvent e) {
-		Point p=new Point(e.getX()-5,e.getY()+30,Color.web("#f0f0f0"));
-		p.setG(Effgrosseur);
+		Point p=null;
+		if(this.Mode.equals("Effacer")) {
+			p=new Point(e.getX()-5,e.getY()+30,Color.web("#f0f0f0"));//橡皮线
+			p.setG(Effgrosseur);
+		}else {
+			p=new Point(e.getX()-5,e.getY()+30,this.mc.getColor());//非橡皮线
+			p.setG(grosseur);
+		}
 		points.add(p);
 		lignes.add(points);
 		this.fm.AddObjectCollection(points);//加入到总的里面的
@@ -79,10 +84,10 @@ public class Dessiner{
 		return this.points;
 	}
 	public ArrayList<ArrayList<Point>> getLignes(){
-		return this.lignes;
+		return lignes;
 	}
 	public void ViderListeLignes() {
-		this.lignes=new ArrayList<ArrayList<Point>>();
+		lignes=new ArrayList<ArrayList<Point>>();
 		this.points=new ArrayList<Point>();
 	}
 	public void setColor(Color c) {
@@ -108,8 +113,8 @@ public class Dessiner{
 		this.Mode=mode;//切换模式
 	}
 
-	public void setLignesPoint(ArrayList<ArrayList<Point>> lignes) {
-		this.lignes=lignes;
+	public void setLignesPoint(ArrayList<ArrayList<Point>> ligne) {
+		lignes=ligne;
 	}
 
 }
