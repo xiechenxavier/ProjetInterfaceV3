@@ -339,8 +339,9 @@ public class MainController implements Initializable{
 	}
 
 	//保存部分:la partie de l'enregistrement
-	public void SaveToFileJson(ActionEvent e) throws IOException {
+	public void SaveToFiles(ActionEvent e) throws IOException {
 		this.E.SaveFile();
+		this.E.GenererImage(mainCanvas);
 	}
 	//打开一个文件
 	public void OpenFromFileJson(ActionEvent e)throws IOException {

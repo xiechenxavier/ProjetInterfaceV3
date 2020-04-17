@@ -1,5 +1,6 @@
 package Controller;
 
+import java.awt.image.RenderedImage;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,6 +23,9 @@ import Modele.Point;
 import Modele.Polygone;
 import Modele.Rectangle;
 import Modele.Triangle;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -176,6 +182,24 @@ public class Enregistrer {
 			input.close();//¹Ø±ÕÁ÷
 
 			this.ff.EffaceretDessiner();
+		}
+	}
+	
+	public void GenererImage(Canvas canvas) {
+		FileChooser fc = new FileChooser();
+		fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PNG", "*.png"));
+		fc.setTitle("±£´æÍ¼Æ¬");
+		File img = fc.showSaveDialog(null);
+		String type = "PNG";
+
+		try {
+			WritableImage writableImage = new WritableImage((int)canvas.getWidth(),(int)canvas.getHeight());
+			canvas.snapshot(null, writableImage);
+			RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
+			if(img != null)
+			ImageIO.write(renderedImage, type, img);
+
+		} catch (IOException ex) {
 		}
 	}
 

@@ -25,7 +25,7 @@
             <items>
                   <MenuItem fx:id="Nouvelle" mnemonicParsing="false" onAction="#NewFile" text="Nouvelle" />
                   <MenuItem fx:id="Ouvrir" mnemonicParsing="false" onAction="#OpenFromFileJson" text="Ouvrir" />
-                  <MenuItem fx:id="Enregistrer" mnemonicParsing="false" onAction="#SaveToFileJson" text="Enregistrer" />
+                  <MenuItem fx:id="Enregistrer" mnemonicParsing="false" onAction="#SaveToFiles" text="Enregistrer" />
                   <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem mnemonicParsing="false" onAction="#CloseApp" text="Fermer" />
             </items>
