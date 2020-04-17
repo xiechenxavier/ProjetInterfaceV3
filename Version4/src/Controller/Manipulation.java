@@ -60,6 +60,7 @@ public class Manipulation {
 			}
 		}
 		if(!isAccesse) {//如果点击的位置在所有图形的外部，则取消选定
+			System.out.println(e.getX()+","+e.getY());
 			DeSelectionnerTous();
 		}else {
 			if(totalCollection.get(FormId)!=null) {

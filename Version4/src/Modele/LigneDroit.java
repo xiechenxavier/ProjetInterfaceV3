@@ -12,14 +12,16 @@ public class LigneDroit extends Polygone{
 		// TODO Auto-generated method stub
 		double x1=this.getPointsVertex()[0].RendreX();
 		double y1=this.getPointsVertex()[0].RendreY();
+
 		double x2=this.getPointsVertex()[1].RendreX();
 		double y2=this.getPointsVertex()[1].RendreY();
-		double k=(y2-y1)/(x2-x1);
-		double b=y1-(k*x1);
+
+		double k1=(y2-y1)/(x2-x1);
+		double b1=y1-(k1*x1);
 		if(x1>x2) {
-			return (x<=x1)&&(x>=x2)&&(y==(k*x+b)); 
+			return (x<=x1)&&(x>=x2)&&(y>=(k1*x+b1-5))&&(y<=(k1*x+b1+5)); 
 		}else {
-			return (x>=x1)&&(x<=x2)&&(y==(k*x+b));
+			return (x>=x1)&&(x<=x2)&&(y>=(k1*x+b1-5))&&(y<=(k1*x+b1+5));
 		}
 	}
 
