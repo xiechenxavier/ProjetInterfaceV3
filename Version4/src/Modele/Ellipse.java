@@ -10,6 +10,24 @@ public class Ellipse extends Polygone{
 	@Override
 	public boolean Accesseur(double x, double y) {
 		// TODO Auto-generated method stub
+		/**/
+		double x2=this.getPointsVertex()[1].RendreX();
+		double y2=this.getPointsVertex()[1].RendreY();
+		double x1=this.getPointsVertex()[0].RendreX();
+		double y1=this.getPointsVertex()[0].RendreY();
+		if(x2>=x1&&y2>=y1) {
+			return (x>=x1)&&(x<=x2)&&(y>=y1)&&(y<=y2);
+		}else if(x2<=x1&&y2>=y1){
+			return (x>=x2)&&(x<=x1)&&(y>=y1)&&(y<=y2);
+		}else if(x2>=x1&&y2<y1) {
+			return (x>=x1)&&(x<=x2)&&(y>=y2)&&(y<=y1);
+		}else {
+			return (x>=x2)&&(x<=x1)&&(y>=y2)&&(y<=y1);
+		}
+
+	}
+	//标准椭圆范围之内
+	public boolean EllipseAccesseur(double x,double y) {
 		double x1=this.getPointsVertex()[0].RendreX();
 		double y1=this.getPointsVertex()[0].RendreY();
 		double x2=this.getPointsVertex()[1].RendreX();

@@ -172,34 +172,38 @@ public class Manipulation {
 		this.ff.EffaceretDessiner();
 	}
 
-	public void ReFormeByDragging(MouseEvent e) {
-		FigureColoree f=(FigureColoree)totalCollection.get(FormId);
-		if(this.Reformable) {
-			if(f!=null) {
-				if(((Polygone)f).IsSeuil(sourisX,sourisY)) {
-					seuilIndice=((Polygone)f).getSeuilIndice();
-					System.out.println(seuilIndice);
-					this.IsSeuil=true;
+	public void ReFormeByDragging(MouseEvent e) throws IndexOutOfBoundsException{
+		if(FormId>=0) {
+			FigureColoree f=(FigureColoree)totalCollection.get(FormId);
+			if(this.Reformable) {
+				if(f!=null) {
+					if(((Polygone)f).IsSeuil(sourisX,sourisY)) {
+						seuilIndice=((Polygone)f).getSeuilIndice();
+						System.out.println(seuilIndice);
+						this.IsSeuil=true;
+					}
 				}
+				if(this.IsSeuil) {//在这个范围之内我们可以操作鼠标通过拉伸来改变图形的大小
+					double dx=e.getX()-sourisX;//移动的x距离
+					double dy=e.getY()-sourisY;//移动的y距离
+					((Polygone)f).transformation(dx, dy, seuilIndice);
+					sourisX=e.getX();
+					sourisY=e.getY();
+				}
+				this.ff.EffaceretDessiner();
 			}
-			if(this.IsSeuil) {//在这个范围之内我们可以操作鼠标通过拉伸来改变图形的大小
-				double dx=e.getX()-sourisX;//移动的x距离
-				double dy=e.getY()-sourisY;//移动的y距离
-				((Polygone)f).transformation(dx, dy, seuilIndice);
-				sourisX=e.getX();
-				sourisY=e.getY();
-			}
-			this.ff.EffaceretDessiner();
 		}
 	}
 
 	public void Redimentionner(double newWidth,double newHeight) {
-		FigureColoree f=(FigureColoree)totalCollection.get(FormId);
-		((Polygone)f).Redimentionner(newWidth, newHeight);
-		totalCollection.set(FormId, f);
-		//		this.fm.setFigures(forms);
-		this.fm.setMainCollection(totalCollection);
-		this.ff.EffaceretDessiner();
+		if(FormId>=0) {
+			FigureColoree f=(FigureColoree)totalCollection.get(FormId);
+			((Polygone)f).Redimentionner(newWidth, newHeight);
+			totalCollection.set(FormId, f);
+			//		this.fm.setFigures(forms);
+			this.fm.setMainCollection(totalCollection);
+			this.ff.EffaceretDessiner();
+		}
 	}
 	//当前选中的那个图形宽度
 	public double getSelectedFormWidth() throws Exception{
